@@ -1,29 +1,6 @@
-[![Circle CI](https://circleci.com/gh/tomatau/breko-hub.svg?style=svg)](https://circleci.com/gh/tomatau/breko-hub)
+Made from [Breko-hub](https://github.com/tomatau/breko-hub).
 
-**B**abel **Re**act **Ko**a - **H**ot **U**niversal **B**oilerplate
-### Breko-hub
-
-Another starter kit for Universal React applications.
-
-The goal here is to build on the existing starter kits, but focusing on more manageable files for a better developer experience.
-
-## What's in the box?
-
-There's a FooRoute component showing how to wire up data on pre-render of both server and client, as well as just client only data.
-
-There's a BarRoute component showing how to prefetch route data with a promise-action.
-
-A tiny trivial API to support the BarRoute's data needs.
-
-There's a Private route doing a redirect on both client and server with a flash message.
-
-FlashMessage component gives an example of action -> reducer flow, as well as a saga to remove messages after a delay. This also shows some BEM utility for managing class names from css-modules in SCSS.
-
-A commented out dispatch call in `src/app/entry.js` to show how to broadcast actions over a socket. And a small socket server hosted within the app (on the same port) to wire up the said broadcast actions.
-
-## Built With Breko Hub
-
-I've used breko hub for various private projects behind DSLs as well as my personal blog [https://tomatao-blog.herokuapp.com/](https://tomatao-blog.herokuapp.com/). You can find the [source-code for my blog on github](https://github.com/tomatau/tomatao-blog).
+...
 
 ## Features
 
@@ -148,11 +125,7 @@ No semi colons, lots of commas on multi-lines for easy duplication, single-quote
 
 Style linting is all default except for some rules which are not important for css modules.
 
-## Coming Soon
-
-- Example applications. I'd rather not just make a counter or TodoList though!
-- More tests.
-- Better documentation.
+...
 
 ## Description
 
@@ -189,10 +162,4 @@ This project has been developed and tested using the above versions of npm and n
 
 Also, it probably doesn't work to develop, build, test or serve on Windows... if you want to make PRs for that, please do! (But nothing too ugly, I'd rather people just stopped that whole windows development thing.)
 
-## Thanks For Ideas!
-
-This boilerplate is shamelessly reusing some ideas from:
-
-- https://github.com/glenjamin/ultimate-hot-reloading-example
-- https://github.com/erikras/react-redux-universal-hot-example
-- https://github.com/davezuko/react-redux-starter-kit
+...

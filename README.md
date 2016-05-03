@@ -10,14 +10,14 @@ TODOs:
 ...?
 8. Decouple Foo and Bar examples from real app; keep as tests
 9. Create mock design for doc edit page
-
-(10-12 can be done laterally or vertically, doesn't matter)
-
+(10-12 below can be done laterally or vertically, doesn't matter)
 10. Integrate static react compoennts for all parts of page (hamburger menu, PDF, bottom sliding window pane form, etc.)
 11. Create state for all components
 12. Create data flow for all components
 13.
+
 ...
+
 TODOs too far into the future to tell:
 
 1x. Use Passport.js recipe for Google (LinkedIn? SO?) auth and do 10-12 for login
@@ -29,13 +29,14 @@ TODOs too far into the future to tell:
 1x. Do 10-12 for cover letter edit page
 
 ...
+
 TODOs with no timeline:
 
 x. Commit and push all Awesome-CV work and add submodule to this one immediately for tracking
 
 x. Move test data mocks to assets in test folder
 
-x. Move below to a different file
+x. Fix NPM dependency issues
 
 ---
 Made from [Breko-hub](https://github.com/tomatau/breko-hub).

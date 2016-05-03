@@ -5,7 +5,7 @@ TODOs:
 3. flesh out reducers, root reducers and reducer composition for nitrile, on both client and server
 4. flesh out store and data flow design for both client and server
 5. tweak saga and async side-effect groundwork to fit nitrile needs
-6. add DB saga (pull in mongoose and mongoDB, hook into async flow); same for PDF saga
+6. hook PDF generator saga into server redux flow
 7. (optional) add scribe (redux-logger) into async flow
 ...?
 8. Decouple Foo and Bar examples from real app; keep as tests
@@ -21,6 +21,7 @@ TODOs:
 TODOs too far into the future to tell:
 
 * Use Passport.js recipe for Google (LinkedIn? SO?) auth and do 10-12 for login
+* add DB saga (pull in mongoose and mongoDB or maybe rethinkdb, hook into async flow)
 * Do 10-12 for settings page
 * Do 10-12 for document type selection page
 * Do 10-12 for cover letter edit page

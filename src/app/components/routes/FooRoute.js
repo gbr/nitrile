@@ -1,10 +1,13 @@
-import { provideHooks } from 'redial'
-import { connect } from 'react-redux'
-import { fooGet, fooGetClientOnly } from 'app/actions/foo'
-import { get } from 'app/utils'
+import { provideHooks } from 'redial';
+import { connect } from 'react-redux';
+import { fooGet, fooGetClientOnly } from 'app/actions/foo';
+import { get } from 'app/utils';
 
 // Example hooks
 @provideHooks({
+  propTypes: {
+    dispatch: React.PropTypes.any,
+  },
   // prefetch both for server side and client side render
   prefetch: ({ dispatch }) => dispatch(fooGet()),
   // defer hook only on client
@@ -15,14 +18,17 @@ import { get } from 'app/utils'
 }))
 class FooRoute extends React.Component {
   render() {
-    const { foo } = this.props
+    const { foo } = this.props;
     return (
-      <section className='FooRoute'>
+      <section className="FooRoute">
         <h3>Foo</h3>
         <span>{foo}</span>
       </section>
-    )
+    );
   }
 }
+FooRoute.propTypes = {
+  foo: React.PropTypes.any,
+};
 
-export default FooRoute
+export default FooRoute;

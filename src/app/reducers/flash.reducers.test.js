@@ -1,55 +1,56 @@
-import { flashReducers } from './flash.reducers'
-import { REMOVE_MESSAGE } from 'app/actions/flash'
+import { flashReducers } from './flash.reducers';
+import { REMOVE_MESSAGE } from 'app/actions/flash';
 
-describe('Flash Reducers', ()=> {
-  it('should return the initial state', ()=> {
-    expect(flashReducers(undefined, {})).to.eql({ messages: [] })
-  })
+describe('Flash Reducers', () => {
+  it('should return the initial state', () => {
+    expect(flashReducers(undefined, {})).to.eql({ messages: [] });
+  });
 
-  context('Given State Has Messages', ()=> {
+  context('Given State Has Messages', () => {
     const messages = [
       { id: 'abc' },
       { id: 'def' },
       { id: 'ghi' },
-    ]
-    const stateWithMessages = { messages }
+    ];
+    const stateWithMessages = { messages };
 
-    describe('REMOVE_FLASH action', ()=> {
+    describe('REMOVE_FLASH action', () => {
       const removeFlashAction = Object.freeze({
         type: REMOVE_MESSAGE,
         payload: {
-          flash_id: _.sample(messages).id,
+          flashId: _.sample(messages).id,
         },
-      })
-      const updateFlashId = () =>
-        removeFlashAction.payload.flash_id = _.sample(messages).id
+      });
+      const updateFlashId = () => {
+        removeFlashAction.payload.flashId = _.sample(messages).id;
+      };
 
-      it('does nothing when the flash_id isn\'t contained', ()=> {
-        function assertStateUnchanged(state, flash_id) {
-          removeFlashAction.payload.flash_id = flash_id
+      it('does nothing when the flashId isn\'t contained', () => {
+        function assertStateUnchanged(state, flashId) {
+          removeFlashAction.payload.flashId = flashId;
           expect(
             flashReducers(state, removeFlashAction)
-          ).to.eql(state)
+          ).to.eql(state);
         }
-        assertStateUnchanged(stateWithMessages, void 0)
-        assertStateUnchanged(stateWithMessages, 'not-contained')
-        assertStateUnchanged(stateWithMessages, 99)
-        assertStateUnchanged(stateWithMessages, {})
-        assertStateUnchanged(stateWithMessages, '')
-      })
+        assertStateUnchanged(stateWithMessages, void 0);
+        assertStateUnchanged(stateWithMessages, 'not-contained');
+        assertStateUnchanged(stateWithMessages, 99);
+        assertStateUnchanged(stateWithMessages, {});
+        assertStateUnchanged(stateWithMessages, '');
+      });
 
-      it('removes a message by id', ()=> {
+      it('removes a message by id', () => {
         _.times(6, () => {
-          updateFlashId()
-          const nextState = flashReducers(stateWithMessages, removeFlashAction)
+          updateFlashId();
+          const nextState = flashReducers(stateWithMessages, removeFlashAction);
           const expectedMessages = _.reject(messages, {
-            id: removeFlashAction.payload.flash_id,
-          })
+            id: removeFlashAction.payload.flashId,
+          });
           expect(nextState).to.eql({
             messages: expectedMessages,
-          })
-        })
-      })
-    })
-  })
-})
+          });
+        });
+      });
+    });
+  });
+});

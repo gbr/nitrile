@@ -1,9 +1,9 @@
-import webpack from 'webpack'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import webpackConfig, { babelLoaderConfig } from 'config/webpack.base.config'
-import { isomorphicPlugin } from 'server/isomorphicTools'
-import autoprefixer from 'autoprefixer'
-import cssnano from 'cssnano'
+import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import webpackConfig, { babelLoaderConfig } from 'config/webpack.base.config';
+import { isomorphicPlugin } from 'server/isomorphicTools';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
 
 export default {
   ...webpackConfig,
@@ -21,13 +21,13 @@ export default {
     ...webpackConfig.plugins,
   ],
   postcss: [
-    autoprefixer({ browsers: [ 'last 2 versions' ] }),
+    autoprefixer({ browsers: ['last 2 versions'] }),
     cssnano(),
   ],
   module: {
-    loaders: [ {
+    loaders: [{
       test: /module\.s?css$/,
-      include: [ /\/src\// ],
+      include: [/\/src\//],
       // not extracting css-modules in development for hot-reloading
       loaders: [
         'style',
@@ -40,7 +40,7 @@ export default {
       ],
     }, {
       test: /\.s?css$/,
-      include: [ /src\/app/, /src\/styles/ ],
+      include: [/src\/app/, /src\/styles/],
       exclude: /module\.s?css$/,
       loader: ExtractTextPlugin.extract(
         'style', 'css!postcss!sass?outputStyle=expanded'
@@ -49,20 +49,20 @@ export default {
       ...babelLoaderConfig,
       query: {
         ...babelLoaderConfig.query,
-        'plugins': [
+        plugins: [
           ...babelLoaderConfig.query.plugins,
-          [ 'react-transform', {
-            'transforms': [ {
-              'transform': 'react-transform-hmr',
-              'imports': [ 'react' ],
-              'locals': [ 'module' ],
+          ['react-transform', {
+            transforms: [{
+              transform: 'react-transform-hmr',
+              imports: ['react'],
+              locals: ['module'],
             }, {
-              'transform': 'react-transform-catch-errors',
-              'imports': [ 'react', 'redbox-react' ],
-            } ],
-          } ],
+              transform: 'react-transform-catch-errors',
+              imports: ['react', 'redbox-react'],
+            }],
+          }],
         ],
       },
-    }, ...webpackConfig.module.loaders ],
+    }, ...webpackConfig.module.loaders],
   },
-}
+};

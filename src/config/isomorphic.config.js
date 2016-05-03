@@ -1,4 +1,4 @@
-import { ASSET_FILE } from 'config/paths'
+import { ASSET_FILE } from 'config/paths';
 
 export default {
 
@@ -17,4 +17,4 @@ export default {
     },
   },
 
-}
+};

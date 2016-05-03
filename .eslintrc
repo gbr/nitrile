@@ -1,21 +1,13 @@
 {
-  "extends": "rackt",
+  "extends": "airbnb",
   "env": {
     "browser": true,
     "mocha": true,
     "node": true
   },
-  "rules": {
-    "react/jsx-uses-react": 1,
-    "react/jsx-no-undef": 2,
-    "react/jsx-uses-vars": 2,
-    "react/wrap-multilines": 2,
-    "jsx-quotes": [2, "prefer-single"],
-    "comma-dangle": [2, "always-multiline"],
-    "space-before-function-paren": [1, "never"]
-  },
   "plugins": [
-    "react"
+    "react",
+     "babel"
   ],
   "globals": {
     "expect": true,
@@ -27,5 +19,13 @@
     "PropTypes": true,
     "_": true,
     "helpers": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   }
 }

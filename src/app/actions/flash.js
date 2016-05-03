@@ -1,20 +1,20 @@
-import uuid from 'uuid'
+import uuid from 'uuid';
 
-export const REMOVE_MESSAGE = 'flash/REMOVE_MESSAGE'
-export const ADD_MESSAGE = 'flash/ADD_MESSAGE'
+export const REMOVE_MESSAGE = 'flash/REMOVE_MESSAGE';
+export const ADD_MESSAGE = 'flash/ADD_MESSAGE';
 
-const makeFlash = (message, type='info') => ({
+const makeFlash = (message, type = 'info') => ({
   type,
   message,
   id: uuid.v1(),
-})
+});
 
-export const removeMessage = (flash_id) => ({
+export const removeMessage = (flashId) => ({
   type: REMOVE_MESSAGE,
-  payload: { flash_id },
-})
+  payload: { flashId },
+});
 
-export const addMessage = (message, type='info') => ({
+export const addMessage = (message, type = 'info') => ({
   type: ADD_MESSAGE,
   payload: makeFlash(message, type),
-})
+});

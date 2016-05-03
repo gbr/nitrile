@@ -1,9 +1,9 @@
-import webpack from 'webpack'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import webpackConfig, { babelLoaderConfig } from 'config/webpack.base.config'
-import { isomorphicPlugin } from 'server/isomorphicTools'
-import autoprefixer from 'autoprefixer'
-import cssnano from 'cssnano'
+import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import webpackConfig, { babelLoaderConfig } from 'config/webpack.base.config';
+import { isomorphicPlugin } from 'server/isomorphicTools';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
 
 export default {
   ...webpackConfig,
@@ -20,13 +20,13 @@ export default {
     }),
   ],
   postcss: [
-    autoprefixer({ browsers: [ 'last 2 versions' ] }),
+    autoprefixer({ browsers: ['last 2 versions'] }),
     cssnano(),
   ],
   module: {
-    loaders: [ {
+    loaders: [{
       test: /module\.s?css$/,
-      include: [ /src\/app/, /src\/styles/ ],
+      include: [/src\/app/, /src\/styles/],
       loader: ExtractTextPlugin.extract(
         'style',
         'css?modules&localIdentName=[path][name]-[local]' +
@@ -35,13 +35,13 @@ export default {
       ),
     }, {
       test: /\.s?css$/,
-      include: [ /src\/app/, /src\/styles/ ],
+      include: [/src\/app/, /src\/styles/],
       exclude: /module\.s?css$/,
       loader: ExtractTextPlugin.extract(
         'style', 'css!postcss!sass?outputStyle=compressed'
       ),
     }, {
       ...babelLoaderConfig,
-    }, ...webpackConfig.module.loaders ],
+    }, ...webpackConfig.module.loaders],
   },
-}
+};

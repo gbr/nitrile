@@ -1,8 +1,8 @@
-import DocumentMeta from 'react-document-meta'
-import ReactDOMServer from 'react-dom/server'
-import { hasWindow } from 'app/utils'
+import DocumentMeta from 'react-document-meta';
+import ReactDOMServer from 'react-dom/server';
+import { hasWindow } from 'app/utils';
 
-const { PropTypes } = React
+const { PropTypes } = React;
 
 export class Html extends React.Component {
 
@@ -11,6 +11,8 @@ export class Html extends React.Component {
     headScripts: PropTypes.array,
     bodyScripts: PropTypes.array,
     headStyles: PropTypes.array,
+    bodyStyles: PropTypes.array,
+    children: React.PropTypes.node,
   };
 
   static defaultProps = {
@@ -20,21 +22,26 @@ export class Html extends React.Component {
     bodyStyles: [],
   };
 
+  getDivContent() {
+    return (this.props.children === null) ?
+      null : ReactDOMServer.renderToString(this.props.children);
+  }
+
   render() {
     const {
       initialState,
       headStyles, headScripts,
       bodyScripts, bodyStyles,
-    } = this.props
+    } = this.props;
     return (
-      <html lang='en'>
+      <html lang="en">
         <head>
           {hasWindow ? null : DocumentMeta.renderAsReact()}
-          <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
           {headStyles.map((style, i) =>
             <link
               href={style} key={i}
-              type='text/css' rel='stylesheet' media='screen'
+              type="text/css" rel="stylesheet" media="screen"
             />
           )}
           <script
@@ -50,12 +57,12 @@ export class Html extends React.Component {
         </head>
         <body>
           <div
-            id='application-root'
+            id="application-root"
             dangerouslySetInnerHTML={{
               __html: ::this.getDivContent(),
             }}
           />
-          <div id='debug-panel-root' />
+          <div id="debug-panel-root" />
           {bodyScripts.map((script, i) =>
             <script src={script} key={i} />
           )}
@@ -63,20 +70,18 @@ export class Html extends React.Component {
             <script key={i}
               dangerouslySetInnerHTML={{
                 __html: `loadCSS('${style}')`,
-              }} />
+              }}
+            />
           )}
           {bodyStyles.map((style, i) =>
             <noscript key={i} dangerouslySetInnerHTML={{
               __html: `<link href="${style}" rel="stylesheet" />`,
-            }} />
+            }}
+            />
           )}
         </body>
       </html>
-    )
+    );
   }
 
-  getDivContent() {
-    const { children } = this.props
-    return (children == null) ? null : ReactDOMServer.renderToString(children)
-  }
 }

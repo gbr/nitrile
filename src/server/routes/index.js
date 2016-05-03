@@ -1,15 +1,15 @@
-import Router from 'koa-router'
-import koaBody from 'koa-body'
+import router from 'koa-router';
+import koaBody from 'koa-body';
 
-const parseBody = koaBody()
-const apiRouter = Router({ prefix: '/api' })
+const parseBody = koaBody();
+const apiRouter = router({ prefix: '/api' });
 
 apiRouter
-  .all('ping', '/ping', parseBody, function *() {
-    this.response.body = { pong: this.request.body }
+  .all('ping', '/ping', parseBody, function *gen() {
+    this.response.body = { pong: this.request.body };
   })
-  .get('bar', '/bar', function *() {
-    this.response.body = { bar: [ 'bruce', 'willis', 'wet', 'himself', 'lol' ] }
-  })
+  .get('bar', '/bar', function *gen() {
+    this.response.body = { bar: ['bruce', 'willis', 'wet', 'himself', 'lol'] };
+  });
 
-export default apiRouter
+export default apiRouter;

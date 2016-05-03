@@ -38,5 +38,7 @@ x. Move test data mocks to assets in test folder
 
 x. Fix NPM dependency issues
 
+x. Fix server routing test to lead to /test rather than /oops
+
 ---
 Made from [Breko-hub](https://github.com/tomatau/breko-hub).

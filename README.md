@@ -20,35 +20,24 @@ TODOs:
 
 TODOs too far into the future to tell:
 
-1x. Use Passport.js recipe for Google (LinkedIn? SO?) auth and do 10-12 for login
-
-1x. Do 10-12 for settings page
-
-1x. Do 10-12 for document type selection page
-
-1x. Do 10-12 for cover letter edit page
-
-1.x Do 10-12 for "about" page
-
-1.x Add correct rotuing for all these pages
+* Use Passport.js recipe for Google (LinkedIn? SO?) auth and do 10-12 for login
+* Do 10-12 for settings page
+* Do 10-12 for document type selection page
+* Do 10-12 for cover letter edit page
+* Do 10-12 for "about" page
+* Add correct rotuing for all these pages
 
 ...
 
 TODOs with no timeline:
 
-x. Commit and push all Awesome-CV work and add submodule to this one immediately for tracking
-
-x. Move test data mocks to assets in test folder
-
-x. Fix NPM dependency issues
-
-x. Fix server routing test to lead to /test rather than /oops
-
-x. Beautify LaTeX output: left justify skills columns, redo changes from personal prototype for spacing and font size, etc.
-
-x. Implement code coverage (istanbul and isparta) into tests
-
-x. Add proper sinon mocks for PDF generator tests
+* Commit and push all Awesome-CV work and add submodule to this one immediately for tracking
+* Move test data mocks to assets in test folder
+* Fix NPM dependency issues
+* Fix server routing test to lead to /test rather than /oops
+* Beautify LaTeX output: left justify skills columns, redo changes from personal prototype for spacing and font size, etc.
+* Implement code coverage (istanbul and isparta) into tests
+* Add proper sinon mocks for PDF generator tests
 
 ---
 Made from [Breko-hub](https://github.com/tomatau/breko-hub).

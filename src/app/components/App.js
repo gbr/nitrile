@@ -12,8 +12,7 @@ const log = {
   app: debug('App.es'),
 };
 
-const metaData = {
-  title: 'Breko Hub',
+const metaData = { title: 'Breko Hub',
   description: 'Breko Hub, a minimal boilerplate'
     + 'for building universal react applications',
   meta: {
@@ -24,25 +23,21 @@ const metaData = {
   },
 };
 
-class App extends React.Component {
-  static propTypes = {
-    children: React.PropTypes.node,
-  };
-  render() {
-    log.app('render');
-    return (
-      <div className={style.app}>
-        <DocumentMeta {...metaData} />
-        <HeadNavigation />
-        <FlashMessages />
-        <img src={avatarPath} alt="me" width="70" />
-        <h1>Breko Hub</h1>
-        <main className={style.content}>
-          {this.props.children}
-        </main>
-      </div>
-    );
-  }
+function App({ children }) {
+  log.app('render');
+  return (
+  <div className={style.app}>
+    <DocumentMeta {...metaData} />
+    <HeadNavigation />
+    <FlashMessages />
+    <img src={avatarPath} alt="me" width="70" />
+    <h1>Breko Hub</h1>
+    <main className={style.content}>
+      {children}
+    </main>
+  </div>
+  );
 }
+App.propTypes = { children: React.PropTypes.node };
 
 export default App;

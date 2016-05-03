@@ -29,14 +29,11 @@ export default function (makeRoutes) {
             return reject(this.throw(error.message));
           }
 
-          trigger('prefetch', renderProps.components, {
+          return Promise.resolve(trigger('prefetch', renderProps.components, {
             dispatch: store.dispatch,
             location: renderProps.location,
             params: renderProps.params,
-          }).then(() => {
-            return resolve(<RouterContext {...renderProps} />);
-          }
-          );
+          }).then(() => (resolve(<RouterContext {...renderProps} />))));
         });
       });
       yield next;

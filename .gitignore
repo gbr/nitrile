@@ -7,3 +7,4 @@ webpack-assets.json
 *.sublime-workspace
 untracked*
 .DS_STORE
+*.pdf

@@ -2,7 +2,7 @@ import { filter } from 'ramda';
 import { typeToReducer, get } from 'app/utils';
 import { REMOVE_MESSAGE, ADD_MESSAGE } from 'app/actions/flash';
 
-const getFlashId = get(['payload', 'flash_id']);
+const getFlashId = get(['payload', 'flashId']);
 const initialState = { messages: [] };
 
 export const flashReducers = typeToReducer({

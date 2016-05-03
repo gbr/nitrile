@@ -4,11 +4,11 @@ import { IndexLink, Link } from 'react-router';
 import styles from './HeadNavigation.module.scss';
 
 describe('Head Navigation Component', () => {
-  beforeEach(() => {
+  beforeEach(function setTree() {
     this.tree = sd.shallowRender(<HeadNavigation />);
   });
 
-  it('renders a nav element with styles.nav className', () => {
+  it('renders a nav element with styles.nav className', function renderNavElement() {
     const nav = this.tree.findNode('nav');
     expect(nav.props).to.have.property('className', styles.nav);
   });
@@ -26,13 +26,13 @@ describe('Head Navigation Component', () => {
       { to: '/private', content: 'Private' },
     ];
 
-    it('only renders the necessary links', () => {
+    it('only renders the necessary links', function renderLinks() {
       expect(
         this.tree.everySubTree(Link.displayName)
       ).to.have.length(links.length);
     });
 
-    it('renders an IndexLink', () => {
+    it('renders an IndexLink', function renderIndexLink() {
       const indexLink = this.tree.findNode(IndexLink.displayName);
       expect(indexLink.type).to.eql(IndexLink);
       expect(indexLink.props).to.eql({
@@ -43,7 +43,7 @@ describe('Head Navigation Component', () => {
     });
 
     links.forEach(link =>
-      it(`renders the ${link.content} link`, () => {
+      it(`renders the ${link.content} link`, function renderLinkContent() {
         const node = this.tree.findComponentLike(
           Link.displayName, { to: link.to }
         );

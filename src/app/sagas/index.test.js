@@ -5,11 +5,11 @@ import { ADD_MESSAGE } from 'app/actions/flash';
 
 describe('Saga Tests', () => {
   describe('Root Saga', () => {
-    beforeEach(() => {
+    beforeEach(function setSaga() {
       this.saga = rootSaga();
     });
 
-    it('should call select with nextFlashMessage', () => {
+    it('should call select with nextFlashMessage', function callSelect() {
       const nextFlash = { ret: 'value' };
       expect(this.saga.next()).to.deep.yield(select(selectors.nextFlashMessage));
       expect(this.saga.next(nextFlash)).to.deep.yield(fork(timeoutRemoveFlash, nextFlash));
@@ -18,11 +18,11 @@ describe('Saga Tests', () => {
   });
 
   describe('takeFlashMessages', () => {
-    beforeEach(() => {
+    beforeEach(function setSaga() {
       this.saga = takeFlashMessages();
     });
 
-    it('should call take with an add_message', () => {
+    it('should call take with an add_message', function callTake() {
       const takeReturn = { payload: { fake: 'stuff' } };
       expect(this.saga.next()).to.deep.yield(take(ADD_MESSAGE));
       expect(this.saga.next(takeReturn))

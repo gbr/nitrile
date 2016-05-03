@@ -14,25 +14,25 @@ describe('FlashMessages Component', () => {
   }];
   const FlashMessages = WrappedFlashMessages.WrappedComponent;
 
-  beforeEach(() => {
+  beforeEach(function setTree() {
     this.tree = shallow(<FlashMessages />);
   });
 
-  it('renders a div with className as its root element', () => {
+  it('renders a div with className as its root element', function renderClassNameDiv() {
     expect(this.tree.at(0).type()).to.eql('div');
     expect(this.tree.at(0).props()).to.have.property(
       'className', 'FlashMessages'
     );
   });
 
-  it('renders an empty div when no messages', () => {
+  it('renders an empty div when no messages', function renderEmptyDiv() {
     expect(this.tree.children()).to.have.length(0);
   });
 
   context('Given Messages', () => {
     const clickHandler = sinon.spy();
 
-    beforeEach(() => {
+    beforeEach(function shallowTree() {
       this.tree = shallow(
         <FlashMessages
           messages={messages}
@@ -41,7 +41,7 @@ describe('FlashMessages Component', () => {
       );
     });
 
-    it('renders a Msg component for each message in props', () => {
+    it('renders a Msg component for each message in props', function renderMsgComponent() {
       expect(this.tree.find(Msg)).to.have.length(messages.length);
       messages.forEach((msg) => {
         const item = this.tree.find({ msg });
@@ -50,7 +50,7 @@ describe('FlashMessages Component', () => {
       });
     });
 
-    it('dispatches a removeMsg with the msg id when clicked', () => {
+    it('dispatches a removeMsg with the msg id when clicked', function dispatchRemoveMsg() {
       messages.forEach((msg) => {
         const item = this.tree.find({ msg });
         item.simulate('click');
@@ -60,7 +60,7 @@ describe('FlashMessages Component', () => {
     });
   });
 
-  describe('Msg Component', () => {
+  describe('Msg Component', function msgComponent() {
     beforeEach(() => {
       this.msg = _.sample(messages);
       this.tree = shallow(<Msg msg={this.msg} />);
@@ -93,7 +93,7 @@ describe('FlashMessages Component', () => {
     });
   });
 
-  describe('Connected FlashMessages', () => {
+  describe('Connected FlashMessages', function connecctedFlashMessages() {
     beforeEach(() => {
       this.store = helpers.createStore({
         flash: { messages },

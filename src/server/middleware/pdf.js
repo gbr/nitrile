@@ -1,5 +1,5 @@
 import nunjucks, { Template } from 'nunjucks';
-import winston, { Logger } from 'winston';
+// import winston, { Logger } from 'winston';
 import { spawn } from 'child_process';
 import _fs from 'fs';
 import path from 'path';
@@ -7,7 +7,7 @@ import _ from 'lodash';
 import _tmp from 'tmp';
 import Promise from 'bluebird';
 
-import { isBadString } from './utils';
+import { isNonEmptyString } from '../utils';
 
 const awesomeFiles = './resources/awesome';
 const resumeFile = 'resume.tex';
@@ -15,12 +15,13 @@ const resumeFile = 'resume.tex';
 const fs = Promise.promisifyAll(_fs);
 const tmp = Promise.promisifyAll(_tmp);
 
-const pdfLogger = new(Logger)({
-  transports: [
-    new(winston.transports.Console)({ level: 'warn' }),
-    new(winston.transports.File)({ filename: 'logs/latex.log' }),
-  ],
-});
+// TODO re-add logging later under a different module
+// const pdfLogger = new(Logger)({
+//   transports: [
+//     new(winston.transports.Console)({ level: 'warn' }),
+//     new(winston.transports.File)({ filename: 'logs/latex.log' }),
+//   ],
+// });
 
 /* TODO find a place to put the below code when we start doing PDF generation with thunks */
 // generateAwesomeResume(JSON.parse(fs.readFileSync('test/claudepark.json'), 'utf8'))
@@ -35,7 +36,7 @@ const pdfLogger = new(Logger)({
 const filters = {
   // Filter to make symbols LaTeX-friendly
   escapeTex: (raw) => {
-    if (isBadString(raw)) { return ''; }
+    if (!isNonEmptyString(raw)) { return ''; }
 
     const latexSubs = [
       [/\\/g, '\\textbackslash'],
@@ -55,14 +56,14 @@ const filters = {
 
   // Filter to make a string a LateX command
   latexCommand: (name) => {
-    if (isBadString(name)) { return ''; }
+    if (!isNonEmptyString(name)) { return ''; }
 
     return `\\${name}`;
   },
 
   // Filter to create custom LaTeX command specific to the awesome resume template
   awesomeName: (name) => {
-    if (isBadString(name)) { return ''; }
+    if (!isNonEmptyString(name)) { return ''; }
 
     const split = name.lastIndexOf(' ');
     return `\\name{${name.substring(0, split)}}{${name.substring(split + 1)}}`;
@@ -70,7 +71,7 @@ const filters = {
 
   // Filter to turn jsonresume date to Date object to awesome resume date string
   awesomeDate: (date) => {
-    if (isBadString(date) && !_.isDate(date)) { return ''; }
+    if (!isNonEmptyString(date) && !_.isDate(date)) { return ''; }
 
     let dt;
     if (_.isString(date)) {
@@ -86,9 +87,9 @@ const filters = {
 };
 
 function createTemplate(filepath, filename) {
-  if (isBadString(filepath)) {
+  if (!isNonEmptyString(filepath)) {
     throw new Error('filepath is not a valid string');
-  } else if (isBadString(filename)) {
+  } else if (!isNonEmptyString(filename)) {
     throw new Error('filename is not a valid string');
   }
 
@@ -131,9 +132,9 @@ function getLatexArgs(options) {
 }
 
 function generatePDF(texCode, filepath, options) {
-  if (isBadString(texCode)) {
+  if (!isNonEmptyString(texCode)) {
     throw new Error('bad TeX code');
-  } else if (isBadString(filepath)) {
+  } else if (!isNonEmptyString(filepath)) {
     throw new Error('filepath not a valid string');
   } else if (!_.isNil(options) && !_.isPlainObject(options)) {
     throw new Error('bad options');
@@ -144,9 +145,9 @@ function generatePDF(texCode, filepath, options) {
     const xelatex = spawn('xelatex', getLatexArgs(options), { cwd: filepath });
     xelatex.stdin.write(texCode);
 
-    xelatex.stdout.on('data', (data) => {
-      pdfLogger.log('info', `stdout: ${data}`);
-    });
+    // xelatex.stdout.on('data', (data) => {
+    //   pdfLogger.log('info', `stdout: ${data}`);
+    // });
 
     xelatex.on('close', (code) => {
       if (code === 0) {

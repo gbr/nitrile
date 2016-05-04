@@ -1,21 +1,24 @@
 /* eslint-env node, mocha */
 /* eslint-disable func-names, prefer-arrow-callback */
 
-/* TODO get code coverage up */
 import _fs from 'fs';
 import { describe, it } from 'mocha';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { Template } from 'nunjucks';
-// import pdfjs from 'pdfjs-dist';
+import pdfjs from 'pdfjs-dist';
 import Promise from 'bluebird';
 import chaiAsPromised from 'chai-as-promised';
 
-const fs = Promise.promisifyAll(_fs);
-
 import { filters, createTemplate, renderData, generatePDF }
   from './pdf.js';
-import { janeDoeData } from '~/test/data';
+
+const fs = Promise.promisifyAll(_fs);
+
+import { janeDoeData } from '~/test/fixtures/assets/data';
+
+const testAssets = './test/fixtures/assets/';
+pdfjs.PDFJS.workerSrc = '~/node_modules/pdfjs-dist/build/pdf.worker.js';
 
 chai.use(dirtyChai);
 chai.use(chaiAsPromised);
@@ -92,7 +95,7 @@ describe('compilation logic', function () {
   describe('nunjucks rendering', function () {
     describe('#createTemplate()', function () {
       it('creates a nunjucks template object', function () {
-        const path = './test';
+        const path = testAssets;
         const filename = 'jane_doe.tex';
         const tmpl = createTemplate(path, filename);
         expect(tmpl instanceof Template).to.be.true();
@@ -115,7 +118,7 @@ describe('compilation logic', function () {
       });
 
       it('returns a path to the resulting PDF', function () {
-        const path = './test';
+        const path = testAssets;
         const filename = 'jane_doe.tex';
         const tmpl = createTemplate(path, filename);
         const latexCode = renderData(tmpl, janeDoeData);
@@ -124,37 +127,41 @@ describe('compilation logic', function () {
         return expect(res).to.eventually.be.fulfilled();
       });
 
-      // it('returns a path to a valid PDF with data matching the template', function (done) {
-      //   const path = './test';
-      //   const filename = 'jane_doe.tex';
-      //   const tmpl = createTemplate(path, filename);
-      //   const latexCode = renderData(tmpl, janeDoeData);
-      //
-      //   const res = generatePDF(latexCode, path, {});
-      //   res.then((pdfPath) => {
-      //     fs.statAsync(pdfPath).then((stats) => {
-      //       expect(stats.isFile()).to.be.true();
-      //       done();
-      //       // const data = new Uint8Array(fs.readFileSync(pdfPath));
-      //
-      //     //   pdfjs.getDocument(data).then((doc) => {
-      //     //     const numPages = getNumPages(doc);
-      //     //     expect(numPages).to.equal(1);
-      //     //
-      //     //     const pdfText = getPDFText(doc);
-      //     //     expect(pdfText.includes('Cartesian')).to.be.true();
-      //     //     done();
-      //     //   }, (pdfErr) => {
-      //     //     done(pdfErr);
-      //     //   });
-      //     // }, (statsErr) => {
-      //     //   done(statsErr);
-      //     // });
-      //     }, (err) => {
-      //       done(err);
-      //     });
-      //   });
-      // });
+      it('returns a path to a valid PDF with data matching the template', function (done) {
+        const path = testAssets;
+        const filename = 'jane_doe.tex';
+        const tmpl = createTemplate(path, filename);
+        const latexCode = renderData(tmpl, janeDoeData);
+
+        const res = generatePDF(latexCode, path, {});
+        res.then((pdfPath) => {
+          fs.statAsync(pdfPath).then((stats) => {
+            expect(stats.isFile()).to.be.true();
+            const data = new Uint8Array(fs.readFileSync(pdfPath));
+
+            pdfjs.getDocument(data).then((doc) => {
+              const numPages = doc.numPages;
+              expect(numPages).to.equal(1);
+
+              const pdfText = doc.getTextContent().then((content) => {
+                content.items.map((item) => item.str);
+              });
+              expect(pdfText.includes('Cartesian')).to.be.true();
+              done();
+            },
+            (pdfErr) => {
+              done(pdfErr);
+            });
+          },
+          (statsErr) => {
+            done(statsErr);
+          });
+        },
+        (err) => {
+          done(err);
+        });
+        done();
+      });
     });
   });
 });

@@ -125,7 +125,7 @@
 
        it('adds a flash message', function () {
          const selectFlashMessages = () =>
-         this.wrapper.findWhere((n) => n.hasClass('FlashMessages__Msg'));
+          this.wrapper.findWhere((n) => n.hasClass('FlashMessages__Msg'));
 
          history.push('/private');
          const flashMsgs = selectFlashMessages();
@@ -135,7 +135,7 @@
 
        it('removes flash messages after 4 seconds', function flashMessageTimeout(done) {
          const selectFlashMessages = () =>
-         this.wrapper.findWhere((n) => n.hasClass('FlashMessages__Msg'));
+          this.wrapper.findWhere((n) => n.hasClass('FlashMessages__Msg'));
 
          history.push('/private');
          const flashMsgs = selectFlashMessages();

@@ -14,7 +14,6 @@ TODOs:
 10. Integrate static react compoennts for all parts of page (hamburger menu, PDF, bottom sliding window pane form, etc.)
 11. Create state for all components
 12. Create data flow for all components
-13.
 
 ...
 
@@ -32,8 +31,6 @@ TODOs too far into the future to tell:
 
 TODOs with no timeline:
 
-* Commit and push all Awesome-CV work and add submodule to this one immediately for tracking
-* Move test data mocks to assets in test folder
 * Fix NPM dependency issues
 * Fix server routing test to lead to /test rather than /oops
 * Beautify LaTeX output: left justify skills columns, redo changes from personal prototype for spacing and font size, etc.

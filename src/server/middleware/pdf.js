@@ -9,7 +9,7 @@ import Promise from 'bluebird';
 
 import { isNonEmptyString } from '../utils';
 
-const awesomeFiles = './resources/awesome';
+const awesomeFiles = '~/src/assets/awesome';
 const resumeFile = 'resume.tex';
 
 const fs = Promise.promisifyAll(_fs);
@@ -125,24 +125,24 @@ function renderData(tmpl, userData, tmplData) {
   return tmpl.render(data);
 }
 
-function getLatexArgs(options) {
-  const args = ['--halt-on-error'];
-  if (options.outputDir) args.push(`--output-directory=${options.outputDir}`);
-  return args;
-}
+// function getLatexArgs(options) {
+//   const args = ['--halt-on-error'];
+//   if (options.outputDir) args.push(`--output-directory=${options.outputDir}`);
+//   return args;
+// }
 
-function generatePDF(texCode, filepath, options) {
+function generatePDF(filepath, texCode = '\\bye', options = ['--halt-on-error']) {
   if (!isNonEmptyString(texCode)) {
     throw new Error('bad TeX code');
   } else if (!isNonEmptyString(filepath)) {
     throw new Error('filepath not a valid string');
-  } else if (!_.isNil(options) && !_.isPlainObject(options)) {
+  } else if (_.isNil(options)) { // && !_.isPlainObject(options)) {
     throw new Error('bad options');
   }
   const pdfPath = `${filepath}/texput.pdf`;
 
   return new Promise((resolve, reject) => {
-    const xelatex = spawn('xelatex', getLatexArgs(options), { cwd: filepath });
+    const xelatex = spawn('xelatex', options, { cwd: filepath });
     xelatex.stdin.write(texCode);
 
     // xelatex.stdout.on('data', (data) => {
@@ -173,13 +173,13 @@ function generateAwesomeResume(data) {
 
   return new Promise((resolve) => {
     tmp.dirAsync({ unsafeCleanup: true }).then((tmpPath) => {
-      fs.readdirAsync(`${awesomeFiles}`).then((filenames) => {
+      fs.readdirAsync(awesomeFiles).then((filenames) => {
         const newFiles = [];
         for (const filename of filenames) {
           newFiles.push(fs.symlinkAsync(path.resolve(`${awesomeFiles}/${filename}`),
                         path.resolve(`${tmpPath}/${filename}`)));
         }
-        const res = generatePDF(texCode, tmpPath, {});
+        const res = generatePDF(tmpPath, texCode, {});
         Promise.all(newFiles).then(res.then((pdf) => (resolve(pdf))));
       });
     });

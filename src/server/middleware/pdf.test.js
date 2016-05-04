@@ -9,6 +9,8 @@ import { Template } from 'nunjucks';
 import pdfjs from 'pdfjs-dist';
 import Promise from 'bluebird';
 import chaiAsPromised from 'chai-as-promised';
+import glob from 'glob';
+import path from 'path';
 
 import { filters, createTemplate, renderData, generatePDF }
   from './pdf.js';
@@ -17,7 +19,7 @@ const fs = Promise.promisifyAll(_fs);
 
 import { janeDoeData } from '~/test/fixtures/assets/data';
 
-const testAssets = './test/fixtures/assets/';
+const testAssets = path.resolve('./test/fixtures/assets');
 pdfjs.PDFJS.workerSrc = '~/node_modules/pdfjs-dist/build/pdf.worker.js';
 
 chai.use(dirtyChai);
@@ -95,49 +97,48 @@ describe('compilation logic', function () {
   describe('nunjucks rendering', function () {
     describe('#createTemplate()', function () {
       it('creates a nunjucks template object', function () {
-        const path = testAssets;
         const filename = 'jane_doe.tex';
-        const tmpl = createTemplate(path, filename);
+        const tmpl = createTemplate(testAssets, filename);
         expect(tmpl instanceof Template).to.be.true();
       });
     });
 
+    afterEach(function () {
+      glob(`${testAssets}/texput*`, (err, files) => {
+        if (err) throw err;
+        for (const file of files) {
+          fs.unlinkSync(file);
+        }
+      });
+    });
+
     describe('#generatePDF()', function () {
-      it('returns null when no document generated', function () {
-        const path = '.';
-        const filename = 'empty.tex';
-        let tmpl;
-        fs.writeFileAsync(filename, emptyString).then(() => {
-          tmpl = createTemplate(path, filename);
-          generatePDF(path, tmpl, {}).then((pdfPath) => {
-            expect(pdfPath).to.be.null();
-          });
-        }).catch(() => {
-          fs.unlinkSync(filename);
-        });
+      it('generates empty page when given no LaTeX code', function (done) {
+        const res = generatePDF(testAssets);
+        expect(res).to.eventually.be.fulfilled();
+        done();
       });
 
-      it('returns a path to the resulting PDF', function () {
-        const path = testAssets;
+      it('returns a testAssets to the resulting PDF', function (done) {
         const filename = 'jane_doe.tex';
-        const tmpl = createTemplate(path, filename);
+        const tmpl = createTemplate(testAssets, filename);
         const latexCode = renderData(tmpl, janeDoeData);
 
-        const res = generatePDF(latexCode, path, {});
-        return expect(res).to.eventually.be.fulfilled();
+        const res = generatePDF(testAssets, latexCode);
+        expect(res).to.eventually.be.fulfilled();
+        done();
       });
 
       it('returns a path to a valid PDF with data matching the template', function (done) {
-        const path = testAssets;
         const filename = 'jane_doe.tex';
-        const tmpl = createTemplate(path, filename);
+        const tmpl = createTemplate(testAssets, filename);
         const latexCode = renderData(tmpl, janeDoeData);
 
-        const res = generatePDF(latexCode, path, {});
+        const res = generatePDF(testAssets, latexCode);
         res.then((pdfPath) => {
           fs.statAsync(pdfPath).then((stats) => {
             expect(stats.isFile()).to.be.true();
-            const data = new Uint8Array(fs.readFileSync(pdfPath));
+            const data = new Uint8Array(fs.readFilSync(pdfPath));
 
             pdfjs.getDocument(data).then((doc) => {
               const numPages = doc.numPages;

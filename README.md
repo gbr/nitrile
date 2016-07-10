@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Nitrile is an attempt to implement my dream of simple, potentially code-free creation of beautiful LaTeX documents. Aware of the wonderful [ShareLaTeX](https://www.sharelatex.com/), I wanted a more intuitive web interface for single-user document creation that allowed creating intricate practical, everyday documents (resumes, cover letters, etc.) without writing a single line of TeX markup. The name is a play on this idea: "nitrile" being a material subsitute for "latex" in cleaning gloves for those who have developed an allergy to it due to long-term exposure. I'm fully aware LaTeX isn't actually pronounced the same--think of it as a visual pun.
+Nitrile is an attempt to implement my dream of simple, potentially code-free creation of beautiful LaTeX documents. Aware of the wonderful [ShareLaTeX](https://www.sharelatex.com/), I wanted a more intuitive web interface for single-user document creation that allowed creating intricate practical, everyday documents (resumes, cover letters, etc.) without writing a single line of TeX markup. The name is a play on this idea: "nitrile" being a material subsitute for "latex" in cleaning gloves for those who have developed an allergy to it due to long-term exposure. I'm fully aware LaTeX isn't actually pronounced the same—think of it as a visual pun.
 
 Nitrile, in its current incarnation, uses Node.js in the server, React in the UI and Redux all around.
 

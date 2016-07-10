@@ -2,11 +2,11 @@
 
 ## What is this?
 
-Nitrile is an attempt to implement my dream of simple, potentially code-free creation of beautiful LaTeX documents. Aware of the wonderful [ShareLaTeX](https://www.sharelatex.com/), I wanted a more intuitive web interface for single-user document creation that allowed creating intricate practical documents (resumes, cover letters, etc.) without writing a single line of TeX markup. The name is a play on this idea: "nitrile" being a material subsitute for "latex" in cleaning gloves for those who have developed an allergy to it due to long-term exposure.
+Nitrile is an attempt to implement my dream of simple, potentially code-free creation of beautiful LaTeX documents. Aware of the wonderful [ShareLaTeX](https://www.sharelatex.com/), I wanted a more intuitive web interface for single-user document creation that allowed creating intricate practical, everyday documents (resumes, cover letters, etc.) without writing a single line of TeX markup. The name is a play on this idea: "nitrile" being a material subsitute for "latex" in cleaning gloves for those who have developed an allergy to it due to long-term exposure.
 
 Nitrile, in its current incarnation, uses Node.js in the server, React in the UI and Redux all around.
 
-Since its inception, the project has evolved into an attempt to implement a thought experiment I read deep in the Redux community...
+Since its inception, the project has evolved into an attempt to implement a thought experiment on side effects and a stateless server...
 
 ## So let's take a step back
 
@@ -15,13 +15,15 @@ Ultimately, here is what nitrile attempts to accomplish:
 - Simple client input in the form of either a form or a textbox, depending on the type of document, and visualization of the last-generated PDF
 - Server application running LaTeX and sending PDFs to the client in real time to render in the browser
 
-The way I eventually chose to do this is with a full-stack Redux communication bus. On the server, this meant pushing the side-effects (the DB, logging, PDF generation, etc.) to the edges of the app while communicating state back to the client. For both client and server, the most natural choice for me was a [RFC 6902](https://tools.ietf.org/html/rfc6902)-style JSON API, which would aid in eventually implementing an undo-redo mechanism. Each diff would contain a "type" field, which is like a Redux Action, and a checkshum header, which is a hash of the current document data, along with other metadata like timestamps, global ids, etc. that I add as needed.
+The way I eventually chose to do this is with a full-stack Redux communication bus. On the server, this meant pushing the side-effects (the DB, logging, PDF generation, etc.) to the edges of the app while communicating state back to the client. For both client and server, the most natural choice for me was a [RFC 6902](https://tools.ietf.org/html/rfc6902)-style JSON API, sending diffs across the wire rather than the full document. This heavily reduces the size of the messages and also made it easier to implement an undo-redo mechanism. Each diff would contain a "type" field, which is like a Redux Action, and a checksum header, which is a hash of the current document data, along with other metadata like timestamps, global ids, etc. that I add as needed.
 
-The server sends an initial diff, which is either state from a previous session hydrated from the database, or a blank header signifying "ready". For the sake of simplicity, the client sends all updates via a "send" button that locks out the UI until a certain timeout period (rather than a complicated optimistic blurring model). This greatlfy simplifies the data flow model, since it implies a guaranteed, heavily synchronized (i.e., strict) flow of dispatch between client and server. The server is just a single process, and the concept of "workers" is diminished to the various side effect jobs (earlier mentioned DB, logging, etc.) which happens asynchronously via Redux Sagas.
+The server sends an initial diff, which is either state from a previous session hydrated from the database, or a blank header signifying "ready". For the sake of simplicity, the client sends all updates via a "send" button that locks out the UI until a certain timeout period (rather than a complicated optimistic blurring model). The server executes diffs and sends a new revision with a valid checksum, which the client verifies by applying its previous diff and ensuring the calculation holds true. This greatlfy simplifies the data flow model, since it implies a guaranteed, heavily synchronized (i.e., strict) flow of dispatch between client and server. This also helped with speeding undo-redo, since I can cache previously generated PDF documents under the name of that document's checksum. All of this comes practically for free once implemented in the Redux model.
+
+The server was dumbed down to a single process for the sake of prototyping, and the concept of "workers" was diminished to the various side effect jobs (earlier mentioned DB, logging, etc.) which happens asynchronously via Redux Sagas.
 
 ## So that's a lot of talk. What does it do right now?
 
-It passes some tests, which means the pieces are working, but it's nowhere near a real app. The client is almost nonexistent, and the pieces of the server are implemented in several directions, as I changed my mind many times while working on this.
+It generates a real resume document from a [jsonresume](https://jsonresume.org/) object using a LaTeX resume template I found here on GitHub, then tweaked in a [private fork](https://github.com/gbr/Awesome-CV) (actually, I've been using this resume, which is partly why I've been so busy). The rest of the code passes some tests, which means the pieces are working, but it's nowhere near a real app. The client is almost nonexistent, and the pieces of the server are implemented in several directions, as I changed my mind many times while working on this.
 
 As of writing, the project has been on hiatus for a few months now as work has consumed more of my free time and I've had other exciting professional developments underway. When I come back to this, I will probably abandon the model described above and try something a little more tried-and-true, just to have a real product to show in the end.
 
